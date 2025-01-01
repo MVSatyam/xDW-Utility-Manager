@@ -1,6 +1,6 @@
 #!/bin/bash
 
-read -p "Login as: " USER
+USER=$(whoami)
 read -p "Enter your password: " -s PASSWORD
 echo -e "\n"
 

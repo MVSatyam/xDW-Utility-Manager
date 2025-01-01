@@ -90,7 +90,7 @@ EOF
 
 check_edw_refresh() {
     # get schema name
-    read -p "Enter schema (ew{x}vtbla): " schema_name
+    read -p "Enter schema: " schema_name
 
     query_to_get_date_field=$(generate_query_to_get_date_field "$schema_name")
     generate_queries_and_execute "$schema_name" "$query_to_get_date_field"
@@ -100,7 +100,7 @@ check_sgdw_refresh() {
     # get schema name
     read -p "Enter schema: " schema_name
 
-    query_to_get_date_field=$(generate_query_to_get_date_field "dwt1vtbla")
+    query_to_get_date_field=$(generate_query_to_get_date_field "$schema_name")
     generate_queries_and_execute "$schema_name" "$query_to_get_date_field"
 }
 
@@ -108,7 +108,7 @@ check_wgdw_refresh() {
     # get schema name
     read -p "Enter schema: " schema_name
 
-    query_to_get_date_field=$(generate_query_to_get_date_field "wdt1vnw")
+    query_to_get_date_field=$(generate_query_to_get_date_field "$schema_name")
     generate_queries_and_execute "$schema_name" "$query_to_get_date_field"
 }
 
