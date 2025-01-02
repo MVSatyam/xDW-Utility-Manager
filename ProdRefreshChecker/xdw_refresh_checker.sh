@@ -65,6 +65,8 @@ EOF
             temp_output_file_size=$(stat -c %s "$tmp_output_file")
             if [ "$temp_output_file_size" -eq 0 ]; then
                 echo -e "\nNo records found for the given schema\n"
+                # remove temporary files
+                rm -f "$sql_file" "$tmp_output_file"
                 exit 1
             fi
             cols=$(head -1 "$tmp_output_file")
@@ -90,7 +92,14 @@ EOF
 
 check_edw_refresh() {
     # get schema name
-    read -p "Enter schema: " schema_name
+    read -p "Enter schema (ew{e}vtbla): " schema_name
+
+    # schema name validation
+    # schema should be ew{e}vtbla or EW{e}VTBLA where {e} is the environment code, non-case sensitive and should be t1, t2, t3, t4, t5, t6, t7, t8, t9, u1, u2, u3, u4, u5, u6, u7, u8, u9
+    if [[ ! "$schema_name" =~ ^[eE][wW][tTuU][1-9][vV][tT][bB][lL][aA]$ ]]; then
+        echo -e "\nInvalid schema name. Please enter schema name in the format ew{e}vtbla or EW{e}VTBLA where {e} is the environment code\n"
+        exit 1
+    fi
 
     query_to_get_date_field=$(generate_query_to_get_date_field "$schema_name")
     generate_queries_and_execute "$schema_name" "$query_to_get_date_field"
@@ -100,6 +109,13 @@ check_sgdw_refresh() {
     # get schema name
     read -p "Enter schema: " schema_name
 
+    # schema name validation
+    # schema should be dw{e}vtbla or DW{e}VTBLA where {e} is the environment code, non-case sensitive and should be t1, t2, t3, t4, t5, t6, t7, t8, t9, u1, u2, u3, u4, u5, u6, u7, u8, u9
+    if [[ ! "$schema_name" =~ ^[dD][wW][tTuU][1-9][vV][tT][bB][lL][aA]$ ]]; then
+        echo -e "\nInvalid schema name. Please enter schema name in the format dw{e}vtbla or DW{e}VTBLA where {e} is the environment code\n"
+        exit 1
+    fi
+
     query_to_get_date_field=$(generate_query_to_get_date_field "$schema_name")
     generate_queries_and_execute "$schema_name" "$query_to_get_date_field"
 }
@@ -107,6 +123,13 @@ check_sgdw_refresh() {
 check_wgdw_refresh() {
     # get schema name
     read -p "Enter schema: " schema_name
+
+    # schema name validation
+    # schema should be wd{e}vtbla or WD{e}VTBLA where {e} is the environment code, non-case sensitive and should be t1, t2, t3, t4, t5, t6, t7, t8, t9, u1, u2, u3, u4, u5, u6, u7, u8, u9
+    if [[ ! "$schema_name" =~ ^[wW][dD][tTuU][1-9][vV][tT][bB][lL][aA]$ ]]; then
+        echo -e "\nInvalid schema name. Please enter schema name in the format wd{e}vtbla or WD{e}VTBLA where {e} is the environment code\n"
+        exit 1
+    fi
 
     query_to_get_date_field=$(generate_query_to_get_date_field "$schema_name")
     generate_queries_and_execute "$schema_name" "$query_to_get_date_field"
