@@ -405,10 +405,17 @@ else
     mkdir -p "$USER"/output
 
     touch "$USER"/input/backup.txt
-    touch "$USER"/input/baseline.csv
+    #touch "$USER"/input/baseline.csv
     touch "$USER"/input/refreshed_tables.txt
-    touch "$USER"/input/fixed_length_to_delimited.txt
+    # touch "$USER"/input/fixed_length_to_delimited.txt
     touch "$USER"/output/teradata_log.txt
+
+    echo "table_name,column_name" > "$USER"/input/baseline.csv
+    {
+        echo 'src_file:""'
+        echo 'tgt_file:""'
+        echo 'widths:""'
+    } > "$USER"/input/fixed_length_to_delimited.txt
 
     echo -e "\nSet up is completed\n"
 fi
