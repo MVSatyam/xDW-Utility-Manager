@@ -342,6 +342,26 @@ convert_fixed_length_to_delimited_file() {
     fi
 }
 
+create_query_from_structure() {
+    # Add your query generation logic here
+    file_size=$(stat -c %s "$USER"/input/structure.txt)
+
+    if [ $file_size -gt 0 ]; then
+        read -p "Enter Schema: " schema
+        read -p "Enter Table Name: " table_name
+
+        awk -f ./PrepareSQL/sqlFromStructure.awk "$schema" "$table_name" < "$USER"/input/structure.txt > "$USER"/output/"$table_name".sql
+
+        if [ $? -eq 0 ]; then
+            echo -e "\nQuery generation is successful. Please check $USER/output/$table_name.sql\n"
+        else
+            echo -e "\nQuery generation failed\n"
+        fi
+    else
+        echo -e "\nFile is empty. Please insert values into $USER/input/structure.txt\n"
+    fi
+}
+
 main() {
     while true; do
         echo "1. Stream Setup"
@@ -353,6 +373,7 @@ main() {
         echo "7. Check Prod Refresh Request Status"
         echo "8. Check Prod Refresh Dates"
         echo "9. Convert Fixed Length to Delimited File"
+        echo "10. Create Query From Structure"
         echo "99. Exit"
         echo
 
@@ -389,6 +410,9 @@ main() {
             99)
                 break
                 ;;
+            10)
+                create_query_from_structure
+                ;;
             *)
                 echo "Invalid choice"
                 ;;
@@ -409,6 +433,7 @@ else
     touch "$USER"/input/refreshed_tables.txt
     # touch "$USER"/input/fixed_length_to_delimited.txt
     touch "$USER"/output/teradata_log.txt
+    touch $USER/input/structure.txt
 
     echo "table_name,column_name" > "$USER"/input/baseline.csv
     {
