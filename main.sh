@@ -2,9 +2,6 @@
 
 USER=$(whoami)
 read -p "Enter your password: " -s PASSWORD
-echo -e "\n"
-
-echo "Welcome $USER"
 
 # function setup environment variables
 setup_env() {
@@ -16,7 +13,7 @@ setup_env() {
 # function to create necessary directories and files
 initialize_directories_and_files() {
     if [ -d "$USER" ]; then
-        echo -e "\nSet up is completed\n"
+        echo -e "\nWelcome $USER, Set up is completed\n"
     else
         mkdir -p "$USER"
         mkdir -p "$USER"/input
@@ -36,7 +33,7 @@ initialize_directories_and_files() {
             echo 'widths:""'
         } > "$USER"/input/fixed_length_to_delimited.txt
 
-        echo -e "\nSet up is completed\n"
+        echo -e "\nWelcome $USER, Set up is completed\n"
     fi
 }
 
@@ -51,7 +48,9 @@ display_menu() {
     echo "7. Check Prod Refresh Request Status"
     echo "8. Check Prod Refresh Dates"
     echo "9. Convert Fixed Length to Delimited File"
+    echo "10. Create Query From Structure"
     echo "99. Exit"
+    echo
 }
 
 # function to handle the main selection
@@ -112,7 +111,7 @@ handle_selection() {
             ./scripts/create_query_from_structure.sh
             ;;
         99)
-            echo "Exiting..."
+            echo -e "\nExiting..."
             exit 0
             ;;
         *)
